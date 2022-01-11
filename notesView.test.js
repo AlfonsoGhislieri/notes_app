@@ -15,11 +15,14 @@ describe('NotesView', () => {
     const notesModel = new NotesModel();
     const notesView = new NotesView(notesModel);
 
-    notesModel.addNote('Buy Milk');
-    notesModel.addNote('Get silk');
-    notesView.displayNotes();
+    const input = document.querySelector('#add-note-input');
+    input.value = 'Example';
+    
+    const button = document.querySelector('#add-note-btn');
+    button.click();
 
-    expect(document.querySelectorAll('div.note').length).toBe(2);
+    expect(document.querySelectorAll('div.note').length).toEqual(1);
+    expect(document.querySelectorAll('div.note')[0].textContent).toEqual('Example');
   });
 
 })

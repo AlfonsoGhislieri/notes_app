@@ -8,5 +8,4 @@ const viewClass = require('./notesView');
 const model = new modelClass();
 const view = new viewClass(model);
 
-model.addNote('This is an example note')
 view.displayNotes();
