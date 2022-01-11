@@ -9,7 +9,7 @@ class NotesView {
 
     notes.forEach(note => {
       let noteElement = document.createElement('div');
-      noteElement.innerText = note;
+      noteElement.textContent = note;
       noteElement.className = 'note';
       this.mainContainer.append(noteElement);
     });
