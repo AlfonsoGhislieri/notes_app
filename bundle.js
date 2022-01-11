@@ -23,5 +23,4 @@
   var modelClass = require_notesModel();
   var model = new modelClass();
   console.log(model.getNotes());
-  console.log("The notes app is running!");
 })();
