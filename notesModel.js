@@ -6,6 +6,10 @@ class Model {
 
   getNotes = () => this.notesArray;
 
+  setNotes = (notesArray) => {
+    this.notesArray = notesArray;
+  }
+
   addNote = (input) => this.notesArray.push(input);
 
   reset = () => this.notesArray = [];

@@ -12,6 +12,9 @@
           this.notesArray = [];
         }
         getNotes = () => this.notesArray;
+        setNotes = (notesArray) => {
+          this.notesArray = notesArray;
+        };
         addNote = (input) => this.notesArray.push(input);
         reset = () => this.notesArray = [];
       };
@@ -19,12 +22,25 @@
     }
   });
 
+  // notesApi.js
+  var require_notesApi = __commonJS({
+    "notesApi.js"(exports, module) {
+      var NotesApi = class {
+        loadNotes = (url, callback) => {
+          fetch(url).then((response) => response.json()).then((data) => callback(data));
+        };
+      };
+      module.exports = NotesApi;
+    }
+  });
+
   // notesView.js
   var require_notesView = __commonJS({
     "notesView.js"(exports, module) {
       var NotesView = class {
-        constructor(modelClass2) {
+        constructor(modelClass2, api2) {
           this.modelClass = modelClass2;
+          this.api = api2;
           this.mainContainer = document.querySelector("#main-container");
           document.querySelector("#add-note-btn").addEventListener("click", () => {
             const newNote = document.querySelector("#add-note-input").value;
@@ -40,8 +56,7 @@
           document.querySelectorAll(".note").forEach((element) => {
             element.remove();
           });
-          const notes = this.modelClass.getNotes();
-          notes.forEach((note) => {
+          this.modelClass.getNotes().forEach((note) => {
             let noteElement = document.createElement("div");
             noteElement.textContent = note;
             noteElement.className = "note";
@@ -55,8 +70,13 @@
 
   // index.js
   var modelClass = require_notesModel();
+  var apiClass = require_notesApi();
   var viewClass = require_notesView();
+  var api = new apiClass();
   var model = new modelClass();
-  var view = new viewClass(model);
-  view.displayNotes();
+  var view = new viewClass(model, api);
+  api.loadNotes("http://localhost:3000/notes", (data) => {
+    model.setNotes(data);
+    view.displayNotes();
+  });
 })();

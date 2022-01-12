@@ -1,11 +1,13 @@
-// console.log doesn't print anything on the page
-// it is not meant to be visible to the user, but for you
-// to help in debugging and getting visibility in your JS code.
-//
-// on Mac (using Chrome), use Option+Command+J to open the console and see this message.
 const modelClass = require('./notesModel');
+const apiClass = require('./notesApi.js')
 const viewClass = require('./notesView');
-const model = new modelClass();
-const view = new viewClass(model);
 
-view.displayNotes();
+const api = new apiClass();
+const model = new modelClass();
+const view = new viewClass(model,api);
+
+
+api.loadNotes('http://localhost:3000/notes', (data) => {
+  model.setNotes(data);
+  view.displayNotes();
+});
