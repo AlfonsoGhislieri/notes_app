@@ -6,7 +6,10 @@ class NotesView {
 
     document.querySelector('#add-note-btn').addEventListener("click", () => {
       const newNote = document.querySelector('#add-note-input').value;
-      this.addNewNote(newNote);
+      this.addNewNote(newNote)
+      this.api.createNote(newNote, (data) => {
+        console.log("sucessfully added", data)
+      });
       document.querySelector('#add-note-input').value = '';
     })
   }

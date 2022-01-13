@@ -29,6 +29,16 @@
         loadNotes = (url, callback) => {
           fetch(url).then((response) => response.json()).then((data) => callback(data));
         };
+        createNote = (input, callback) => {
+          const note = { content: input };
+          fetch("http://localhost:3000/notes", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(note)
+          }).then((response) => response.json()).then((data) => callback(data));
+        };
       };
       module.exports = NotesApi;
     }
@@ -45,6 +55,9 @@
           document.querySelector("#add-note-btn").addEventListener("click", () => {
             const newNote = document.querySelector("#add-note-input").value;
             this.addNewNote(newNote);
+            this.api.createNote(newNote, (data) => {
+              console.log("sucessfully added", data);
+            });
             document.querySelector("#add-note-input").value = "";
           });
         }

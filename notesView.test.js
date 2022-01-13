@@ -5,15 +5,22 @@
 
 const NotesView = require('./notesView')
 const NotesModel = require('./notesModel')
+const NotesApi = require('./notesApi')
 const fs = require('fs');
+require('jest-fetch-mock').enableMocks()
 
 describe('NotesView', () => {
   test('.displaynotes -> gets list of notes from model', () => {
 
     document.body.innerHTML = fs.readFileSync('./index.html');
 
+    fetch.mockResponseOnce(JSON.stringify({
+      note: 'test note'
+    }));
+
     const notesModel = new NotesModel();
-    const notesView = new NotesView(notesModel);
+    const notesApi = new NotesApi();
+    const notesView = new NotesView(notesModel,notesApi);
 
     const input = document.querySelector('#add-note-input');
     input.value = 'Example';

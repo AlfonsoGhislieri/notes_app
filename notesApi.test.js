@@ -8,10 +8,21 @@ describe('NotesApi', () => {
       note: 'test note'
     }));
 
-    api.loadNotes('test', (data) => {
+    api.loadNotes('notes database server', (data) => {
+      expect(data.note).toEqual('test note');
+    });
+  });
+
+  test('makes a post request to server to create a new note', () => {
+    const api = new NotesApi();
+    fetch.mockResponseOnce(JSON.stringify({
+      note: 'test note'
+    }));
+
+    api.createNote('test note', (data) => {
       expect(data.note).toEqual('test note');
     })
+  });
+}); 
 
-  }); 
-});
 
