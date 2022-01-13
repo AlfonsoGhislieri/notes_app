@@ -8,7 +8,7 @@ describe('NotesApi', () => {
       note: 'test note'
     }));
 
-    api.loadNotes((data) => {
+    api.loadNotes('test', (data) => {
       expect(data.note).toEqual('test note');
     })
 
