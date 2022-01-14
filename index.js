@@ -7,6 +7,11 @@ const model = new modelClass();
 const view = new viewClass(model,api);
 
 api.loadNotes('http://localhost:3000/notes', (data) => {
-  model.setNotes(data);
-  view.displayNotes();
+  console.log(data)
+  for (element of data) {
+    api.convertEmoji(element, (converted) => {
+      model.addNote(converted);
+    })
+  };
+  setTimeout(() => view.displayNotes(), 200);
 });

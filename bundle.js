@@ -39,6 +39,15 @@
             body: JSON.stringify(note)
           }).then((response) => response.json()).then((data) => callback(data));
         };
+        convertEmoji = (data, callback) => {
+          fetch("https://makers-emojify.herokuapp.com/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ text: data })
+          }).then((response) => response.json()).then((data2) => callback(data2.emojified_text));
+        };
       };
       module.exports = NotesApi;
     }
@@ -66,8 +75,8 @@
           this.displayNotes();
         };
         displayNotes = () => {
-          document.querySelectorAll(".note").forEach((element) => {
-            element.remove();
+          document.querySelectorAll(".note").forEach((element2) => {
+            element2.remove();
           });
           this.modelClass.getNotes().forEach((note) => {
             let noteElement = document.createElement("div");
@@ -89,7 +98,13 @@
   var model = new modelClass();
   var view = new viewClass(model, api);
   api.loadNotes("http://localhost:3000/notes", (data) => {
-    model.setNotes(data);
-    view.displayNotes();
+    console.log(data);
+    for (element of data) {
+      api.convertEmoji(element, (converted) => {
+        model.addNote(converted);
+      });
+    }
+    ;
+    setTimeout(() => view.displayNotes(), 200);
   });
 })();
